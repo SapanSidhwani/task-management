@@ -37,19 +37,11 @@ CREATE TABLE `users` (
   FOREIGN KEY (`roleId`) REFERENCES `roles` (`rId`)
 );
 
-INSERT INTO `users`(`userId`, `username`, `email`, `password`, `status`, `roleId`) VALUES ('1','Sapan','XQD8H@example.com','1234','1','2');
-
-INSERT INTO `users`(`userId`, `username`, `email`, `password`, `status`, `roleId`) VALUES ('2','Rahil','XQ123H@example.com','1234', '1','1');
-
-INSERT INTO `users`(`userId`, `username`, `email`, `password`, `status`, `roleId`) VALUES ('3','Sajal','XQadas8H@example.com','1234', '1', '4');
-
-INSERT INTO `users`(`userId`, `username`, `email`, `password`, `status`, `roleId`) VALUES ('4','Rohit','XQDdadaH@example.com','1234', '1','3');
-
-
 INSERT INTO `roles`(`rId`, `rName`) VALUES ('1','Senior PHP Developer');
 INSERT INTO `roles`(`rId`, `rName`) VALUES ('2','Junior PHP Developer');
 INSERT INTO `roles`(`rId`, `rName`) VALUES ('3','Digital Marketing');
 INSERT INTO `roles`(`rId`, `rName`) VALUES ('4','Frontend Developer');
+INSERT INTO `roles`(`rId`, `rName`) VALUES ('5','Figma Designer');
 
 INSERT INTO `permissions`(`pId`, `pType`) VALUES ('1','Can Edit');
 INSERT INTO `permissions`(`pId`, `pType`) VALUES ('2','Can Delete');
@@ -63,4 +55,13 @@ INSERT INTO `rolepermissions`(`rId`, `pId`) VALUES ('3','2');
 INSERT INTO `rolepermissions`(`rId`, `pId`) VALUES ('4','3');
 INSERT INTO `rolepermissions`(`rId`, `pId`) VALUES ('3','3');
 
+INSERT INTO `users`(`userId`, `username`, `email`, `password`, `status`, `roleId`) VALUES ('1','Sapan','XQD8H@example.com','1234','1','2');
+
+INSERT INTO `users`(`userId`, `username`, `email`, `password`, `status`, `roleId`) VALUES ('2','Rahil','XQ123H@example.com','1234', '1','1');
+
+INSERT INTO `users`(`userId`, `username`, `email`, `password`, `status`, `roleId`) VALUES ('3','Sajal','XQadas8H@example.com','1234', '1', '4');
+
+INSERT INTO `users`(`userId`, `username`, `email`, `password`, `status`, `roleId`) VALUES ('4','Rohit','XQDdadaH@example.com','1234', '1','3');
+
+INSERT INTO `users`(`userId`, `username`, `email`, `password`, `status`, `roleId`) VALUES ('5','John','XQDJohndaH@example.com','1234', '0','3');
 

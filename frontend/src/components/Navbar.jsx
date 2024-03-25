@@ -1,11 +1,15 @@
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
+import useToken from '../store/useToken';
 
 export const Navbar = () => {
+
+    const {setToken} = useToken();
     const navigate = useNavigate();
     const handleLogout = () => {
         Cookies.remove('PHPSESSID');
+        setToken('');
         navigate('/login');
     }
     return (

@@ -1,4 +1,4 @@
-import { createBrowserRouter, Outlet, RouterProvider } from 'react-router-dom';
+import { createBrowserRouter, Navigate, Outlet, RouterProvider } from 'react-router-dom';
 import './App.css';
 import { Login } from './components/Login';
 import { HomePage } from './components/HomePage';
@@ -6,6 +6,7 @@ import { Sidebar } from './components/Sidebar';
 import { Navbar } from './components/Navbar';
 import { AddMember } from './components/AddMember';
 import { EditMember } from './components/EditMember';
+import useToken from './store/useToken';
 
 function RootLayout(props) {
   return (
@@ -19,6 +20,7 @@ function RootLayout(props) {
 
 function App() {
 
+  const { token } = useToken();
   const router = createBrowserRouter([
     {
       path: "/",
@@ -26,21 +28,21 @@ function App() {
       children: [
         {
           path: '/',
-          element: <HomePage key="home" />
+          element: token ? <HomePage key="home" /> : <Navigate to="/login" />
         },
         {
           path: "/addnewmember",
-          element: <AddMember key="addnewmember" />
+          element: token ? <AddMember key="addnewmember" /> : <Navigate to="/login" />
         },
         {
           path: "/editmember",
-          element: <EditMember key="editmember" />
+          element: token ? <EditMember key="editmember" /> : <Navigate to="/login" />
         }
       ]
     },
     {
       path: "/login",
-      element: <Login key="login" />
+      element: token ? <Navigate to="/" /> : <Login key="login" />
     }
   ]);
 

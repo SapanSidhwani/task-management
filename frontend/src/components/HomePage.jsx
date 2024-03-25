@@ -1,8 +1,13 @@
-import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import useSelectedUser from '../store/useSelectedUser';
 
 export const HomePage = () => {
-    const [users, setUsers] = useState([])
+
+    const [users, setUsers] = useState([]);
+    const { setSelectedUser } = useSelectedUser();
+    const navigate = useNavigate();
+
     useEffect(() => {
         const fetchUsers = async () => {
 
@@ -11,14 +16,58 @@ export const HomePage = () => {
                 credentials: 'include',
                 headers: {
                     'Content-Type': 'application/json'
-
                 }
             });
             const data = await response.json();
-            setUsers(data.users);
+            if (data.success) {
+                setUsers(data.users);
+            } else {
+                alert(data.error);
+            }
         }
         fetchUsers();
     }, [])
+
+    const fetchUserData = async (userId) => {
+        const response = await fetch('http://localhost:1234/controllers/selectedUserDetails.php', {
+            method: 'POST',
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ userId })
+        });
+        const responseData = await response.json();
+        if (responseData.success === false) {
+            alert(responseData.error);
+        } else {
+            setSelectedUser(responseData.selectedUserDetails);
+        }
+        navigate('/editmember');
+    }
+
+    const deleteUser = async (userId) => {
+        const takePermission = window.confirm('Are you sure you want to delete this user?');
+        if (!takePermission) {
+            return;
+        }
+        const response = await fetch('http://localhost:1234/controllers/deleteUser.php', {
+            method: 'POST',
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ userId })
+        })
+        const data = await response.json();
+        console.log(data);
+        if (data.success === false) {
+            alert(data.error);
+        } else {
+            // alert(data.message); // message: user deleted successfully 
+            setUsers(users.filter((user) => user.userId !== userId));
+        }
+    }
     return (
         <main id='main' className="main">
             <section className="section">
@@ -42,15 +91,12 @@ export const HomePage = () => {
                                         <th scope="row">{user.userId}</th>
                                         <td>{user.username}</td>
                                         <td>{user.email}</td>
-                                        <td>{user.status ? "Active" : "Inactive"}</td>
+                                        <td>{user.status == 1 ? "Active" : "Inactive"}</td>
                                         <td>{user.roleId}</td>
                                         <td>
                                             <div className="d-flex gap-2 justify-content-center">
-
-                                                <Link to="/editmember" className="btn btn-primary">Edit</Link>
-                                                <form action="post">
-                                                    <a type='submit' className="btn btn-danger">Delete</a>
-                                                </form>
+                                                <a onClick={() => fetchUserData(user.userId)} className="btn btn-primary">Edit</a>
+                                                <a onClick={() => deleteUser(user.userId)} className="btn btn-danger">Delete</a>
                                             </div>
                                         </td>
                                     </tr>

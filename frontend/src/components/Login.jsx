@@ -1,8 +1,10 @@
+import Cookies from 'js-cookie';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import useToken from '../store/useToken';
 
 export const Login = () => {
-
+  const { setToken } = useToken();
   const navigate = useNavigate();
   const [lDetails, setLDetails] = useState({
     username: "",
@@ -25,6 +27,7 @@ export const Login = () => {
       alert(responsedata.error);
     }
     else {
+      setToken(Cookies.get('PHPSESSID'));
       navigate('/');
     }
   }
